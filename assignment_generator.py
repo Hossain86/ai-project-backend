@@ -19,7 +19,7 @@ def assignment_gen(text):
         The final lab report should be clear, structured, and easy to understand for anyone reading it."""
       )
     response = client.models.generate_content(
-        model="gemini-2.0-flash", contents=prompt
+        model="gemini-2.0-flash-lite", contents=prompt
     )
     if not response or not response.text:
       return {"error ":"Failed to generate Lab Report"}

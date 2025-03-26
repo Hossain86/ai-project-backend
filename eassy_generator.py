@@ -22,7 +22,7 @@ def generate_essay_or_paragraph(topic: str, essay_type: str):
     try:
         # Generate content using the Gemini API
         response = client.models.generate_content(
-            model="gemini-2.0-flash", contents=prompt
+            model="gemini-2.0-flash-lite", contents=prompt
         )
         
         # Check if the response contains text

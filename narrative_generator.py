@@ -23,7 +23,7 @@ def generateOpenEnded(text):
     )
     
     response = client.models.generate_content(
-        model="gemini-2.0-flash", contents=prompt
+        model="gemini-2.0-flash-lite", contents=prompt
     )
     
     if not response or not response.text:
