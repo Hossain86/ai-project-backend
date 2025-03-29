@@ -2,39 +2,35 @@ import re
 import os
 from google import genai
 from dotenv import load_dotenv
-
-# Load API key from .env file
 load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
-
-# Initialize Gemini API Client
 client = genai.Client(api_key=API_KEY)
 
-def generateMCQ(text):
+def generateMCQ(text, num_questions, level, difficulty):
     """Generate multiple-choice questions (MCQs) from extracted text."""
     prompt = (
-        "Generate 10 multiple-choice questions with 4 options each. "
-        "Format each question like this:\n\n"
-        "1: What is AI?\n"
-        "   a) A fruit\n"
-        "   b) A technology\n"
-        "   c) A planet\n"
-        "   d) A language\n"
-        "Answer: b) A technology\n\n"
-        "Now generate MCQs from the following text:\n\n"
-        f"{text}"
+        f"""
+            Generate {num_questions} multiple-choice questions (MCQs) from the text below.
+            Difficulty: {difficulty}. Education Level: {level}.
+            Ensure four options per question. Format:
+            1. What is AI?
+            a) A fruit
+            b) A technology
+            c) A planet
+            d) A language
+            Answer: b) A technology
+            Text:
+            {text}
+            """
     )
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash-lite", contents=prompt
+        model="gemini-2.0-flash", contents=prompt
     )
-
     if not response or not response.text:
         return {"error": "Failed to generate MCQs."}
 
     mcq_text = response.text
-
-    # Extract questions and answers using regex
     pattern = re.compile(r'(\d+): (.*?)\n\s*a\) (.*?)\n\s*b\) (.*?)\n\s*c\) (.*?)\n\s*d\) (.*?)\nAnswer: (.*?)\n', re.DOTALL)
     mcqs = []
 

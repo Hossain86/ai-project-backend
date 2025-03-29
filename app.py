@@ -59,29 +59,32 @@ def home():
 
 @app.route("/generate-questions", methods=["POST"])
 def generate_questions():
-    """API endpoint to generate MCQs or OpenEnded Questions from an uploaded PDF."""
+    """API endpoint to generate MCQs or Narrative Questions from PDF or Text."""
     
-    if 'pdf' not in request.files:
-        return jsonify({"error": "No file uploaded"}), 400
-
-    pdf_file = request.files['pdf']
     question_type = request.form.get("question_type", "mcq")
+    num_questions = int(request.form.get("num_questions", 10))
+    level = request.form.get("level", "Undergraduate")
+    difficulty = request.form.get("difficulty", "Average")
 
-    if pdf_file.filename == "":
-        return jsonify({"error": "Empty filename"}), 400
+    extracted_text = ""
 
-    pdf_path = "temp.pdf"
-    pdf_file.save(pdf_path)
-    extracted_text = extractText(pdf_path)
+    if 'pdf' in request.files:
+        pdf_file = request.files['pdf']
+        pdf_path = "temp.pdf"
+        pdf_file.save(pdf_path)
+        extracted_text = extractText(pdf_path)
+        os.remove(pdf_path)
+
+    elif "text" in request.form:
+        extracted_text = request.form.get("text", "")
 
     if not extracted_text.strip():
-        return jsonify({"error": "No text found in PDF"}), 400
+        return jsonify({"error": "No valid text provided."}), 400
 
-    print(f"Received request for {question_type}")  # Debug log
-
-    result = generateMCQ(extracted_text) if question_type == "mcq" else generateOpenEnded(extracted_text)
-
-    os.remove(pdf_path)
+    if question_type == "mcq":
+        result = generateMCQ(extracted_text, num_questions, level, difficulty)
+    else:
+        result = generateOpenEnded(extracted_text, num_questions, level, difficulty)
 
     return jsonify(result)
 
