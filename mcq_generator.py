@@ -9,23 +9,21 @@ client = genai.Client(api_key=API_KEY)
 def generateMCQ(text, num_questions, level, difficulty):
     """Generate multiple-choice questions (MCQs) from extracted text."""
     prompt = (
-        f"""
-            Generate {num_questions} multiple-choice questions (MCQs) from the text below.
-            Difficulty: {difficulty}. Education Level: {level}.
-            Ensure four options per question. Format:
-            1. What is AI?
-            a) A fruit
-            b) A technology
-            c) A planet
-            d) A language
-            Answer: b) A technology
-            Text:
-            {text}
-            """
-    )
-
+        f"Generate {num_questions} multiple-choice questions (MCQs) from the text below."
+        f"Difficulty: {difficulty}. Education Level: {level}."
+        "Format each question like this:\n\n"
+        "1: What is AI?\n"
+        "   a) A fruit\n"
+        "   b) A technology\n"
+        "   c) A planet\n"
+        "   d) A language\n"
+        "Answer: b) A technology\n\n"
+        "Now generate MCQs from the following text:\n\n"
+        f"{text}"
+)
+    print("Sending request to Gemini API...")  # Debugging
     response = client.models.generate_content(
-        model="gemini-2.0-flash", contents=prompt
+        model="gemini-2.0-flash-lite", contents=prompt
     )
     if not response or not response.text:
         return {"error": "Failed to generate MCQs."}
@@ -46,4 +44,5 @@ def generateMCQ(text, num_questions, level, difficulty):
             "answer": match.group(7).strip()
         })
 
+    #print("✅ Parsed MCQs:", mcqs)
     return mcqs
