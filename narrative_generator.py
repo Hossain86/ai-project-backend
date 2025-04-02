@@ -13,7 +13,7 @@ def generateOpenEnded(text, num_questions, level, difficulty):
         "Keep the text's explanation style and include examples if possible.\n\n"
         "Format:\n"
         "1. What is AI?\n"
-        "✅ Answer: AI (Artificial Intelligence) simulates human intelligence in machines, enabling tasks like speech recognition and decision-making. "
+        "✅ Answer: Artificial intelligence (AI) refers to the ability of computers to perform tasks that typically require human intelligence. This includes activities like learning, problem-solving, and decision-making. AI systems are often designed using algorithms, which are sets of instructions that enable computers to analyze data and identify patterns. There are different types of AI, ranging from narrow AI, which is designed for a specific task like playing chess, to general AI, which could potentially perform any intellectual task a human can. AI is rapidly evolving, impacting various sectors such as healthcare, finance, and transportation, and raising important questions about its ethical implications and future impact on society. "
         "Examples: Siri, Alexa, self-driving cars.\n\n"
         f"Text:\n{text}"
     )
