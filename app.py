@@ -158,20 +158,19 @@ def study_plan():
     name = data.get("name")
     age = data.get("age")
     education_level = data.get("educationLevel")
-    exam_date = data.get("examDate")
     days_left = data.get("daysLeft")
     subjects = data.get("subjects")
     preferences = data.get("preferences")
     availability = data.get("availability")
 
-    if not all([name, age, education_level, exam_date, days_left, subjects, preferences, availability]):
+    if not all([name, age, education_level, days_left, subjects, preferences, availability]):
         return jsonify({"error": "Missing required fields"}), 400
 
     print(f"Generating study plan for {name}...")  # Debug log
     
-    study_plan = generate_study_plan(name, age, education_level, exam_date, days_left, subjects, preferences, availability)
+    study_plan = generate_study_plan(name, age, education_level, days_left, subjects, preferences, availability)
     
-    return jsonify({"study_plan": study_plan})
+    return jsonify({"studyPlan": study_plan})
 
 
 @app.route("/generate-essay", methods=["POST"])
